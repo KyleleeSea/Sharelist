@@ -1,0 +1,77 @@
+<!-- Based on https://github.com/ab007shetty/nodejs-contact-form -->
+<!-- Uses nodemailer  https://nodemailer.com/about/-->
+<!-- Attached to KyLVenturesLLC@gmail.com -->
+
+<% layout('layouts/boilerplate')%>
+    <!--Section: Contact v.2-->
+    <section class="mb-4">
+
+        <!--Section heading-->
+        <h2 class="h1-responsive font-weight-bold text-center mt-2 mb-3">Contact ShareList</h2>
+        <!--Section description-->
+        <p class="text-center w-responsive mx-auto mb-3">Interested in having your playlist featured? Interested in
+            publishing an
+            advertisement to the ShareList website? We'd love to talk!</p>
+
+        <div class="row ">
+
+            <!--Grid column-->
+            <div class="">
+                <form id="contact-form" name="contact-form" action="/featurecontact" method="POST">
+
+                    <!--Grid row-->
+                    <div class="row justify-content-center">
+
+                        <!--Grid column-->
+                        <div class="col-md-6 mb-3">
+                            <div class="md-form mb-0">
+                                <label for="name" class="mb-1">Your name</label>
+                                <input type="text" id="name" name="name" class="form-control">
+                            </div>
+                        </div>
+                        <!--Grid column-->
+
+                        <!--Grid column-->
+                        <div class="col-md-6 mb-3">
+                            <div class="md-form mb-0">
+                                <label for="email" class="mb-1">Your email</label>
+                                <input type="text" id="email" name="email" class="form-control">
+                            </div>
+                        </div>
+                        <!--Grid column-->
+
+                    </div>
+                    <!--Grid row-->
+
+                    <!--Grid row-->
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <div class="md-form mb-0">
+                                <label for="subject" class="mb-1">Subject</label>
+                                <input type="text" id="subject" name="subject" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <!--Grid row-->
+
+                    <!--Grid row-->
+                    <div class="row">
+
+                        <!--Grid column-->
+                        <div class="col-md-12 mb-3">
+
+                            <div class="md-form">
+                                <label for="message" class='mb-1'>Your message</label>
+                                <textarea type="text" id="message" name="message" rows="6"
+                                    class="form-control md-textarea"></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--Grid row-->
+                    <button class="btn btn-primary">Send</button>
+
+                </form>
+            </div>
+            <!--Grid column-->
+        </div>

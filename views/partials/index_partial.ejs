@@ -1,0 +1,56 @@
+<!-- Used to generate body of rising, featured, recent, top, and weekly index pages. Only difference in those pages is the order. -->
+<!-- https://github.com/metafizzy/infinite-scroll https://infinite-scroll.com/demo/full-page/-->
+
+<div class="mb-2">
+    <a href="/playlists/new">Add Playlist</a>
+</div>
+<% for (let playlist of playlists){%>
+    <div class="card" mb-3>
+        <div class="row">
+            <div class="col-md-2">
+                <img class="img-fluid" alt="" src="<%=playlist.image%>">
+            </div>
+            <div class="col-md-10">
+                <div class="card-body">
+                    <div class="flex-row d-flex">
+                        <h3 class="card-title">
+                            <%= playlist.title %>
+                        </h3>
+
+                        <div class="ml-1">
+                            <% for(let tag of playlist.tags) { %>
+                                <span class="badge alert-secondary text-dark mt-2 badge-pill">
+                                    <%=tag%>
+                                </span>
+                                <% } %>
+                        </div>
+                    </div>
+
+                    <h6 class='card-title'>
+                        <%= playlist.num_tracks%> Tracks | <a class='link-dark text-decoration-none'
+                                href="/profiles/<%= playlist.author.username%>" target="_blank">Posted
+                                by: <%= playlist.author.username%>
+                            </a>
+                    </h6>
+                    <div class='d-flex flex-row'>
+                        <div class='p-2'>
+                            <p class="starability-result" data-rating="<%=Math.round(playlist.avg_rev)%>">
+                                Rated: <%= Math.round(playlist.avg_rev) %> stars
+                            </p>
+                        </div>
+                        <div class='p-2'>
+                            <h4 class='text-muted'>
+                                (<%= playlist.num_revs %>)
+                            </h4>
+                        </div>
+                    </div>
+                    <a class="btn btn-primary" href="/playlists/<%=playlist._id%>"
+                        data-intro='Click "View" on any playlist to listen directly inside your browser. No Spotify or ShareList account needed!'
+                        data-step="4">View
+                        <%=playlist.title%>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% }%>

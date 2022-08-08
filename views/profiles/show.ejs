@@ -1,0 +1,191 @@
+<% layout('layouts/boilerplate')%>
+
+    <link rel="stylesheet" href="/stylesheets/stars.css">
+    <link rel="stylesheet" href="/stylesheets/css/social-share-kit.css" type="text/css">
+    <script type="text/javascript" src="/javascripts/social-share-kit.js"></script>
+    <link rel="stylesheet" href="/stylesheets/mobile.css">
+    <div class="flex-row d-flex justify-content-center">
+        <h3>
+            <%=user.username%>'s Profile
+        </h3>
+        <!-- Most inner display follow button if not following and person logged in. Most outer typeof operation deals with if the user isn't logged in. -->
+        <!-- Middle if checks if user is viewing their own profile. If user is viewing their own profile, follow button doesn't show -->
+        <% if(typeof user_logged_in !='undefined' ) { %>
+            <% if (String(user_logged_in._id) !=String(user._id)){%>
+                <!-- Using variable of user_logged_in_unpopulated to avoid querying nested arrays and objects of user_logged_in when following is populated -->
+                <% if((!user_logged_in_unpopulated['following'].includes(user._id) && currentUser)) {%>
+
+                    <form action="/follow" method="POST">
+
+                        <button name='follow' class="btn btn-dark ml-3 btn-sm" type="submit" value="<%=user.username%>"
+                            id="follow">Follow</button>
+                    </form>
+                    <% } else { %>
+                        <form action="/unfollow" method="POST">
+
+                            <button name='unfollow' class="btn btn-danger ml-3 btn-sm" type="submit"
+                                value="<%=user.username%>" id="unfollow">unfollow</button>
+                        </form>
+                        <% }%>
+                            <% } %>
+                                <%}%>
+
+    </div>
+    <!-- Display follower and following for all profiles that arent the users -->
+    <% if(typeof user_logged_in !='undefined' ) { %>
+        <% if(String(user_logged_in._id) !=String(user._id)) {%>
+            <div class="flex-row d-flex justify-content-center">
+                <h5 class="font-weight-normal mr-2">Followers: <%= user.followers.length%>
+                </h5>
+                <h5 class="font-weight-normal mr-2">|
+                </h5>
+                <h5 class="font-weight-normal">Following: <%= user.following.length%>
+                </h5>
+            </div>
+            <% } else {%>
+                <!-- Display follower and following buttons with menu to view followers and following  -->
+                <!-- Follower -->
+                <div class="flex-row d-flex justify-content-center">
+                    <button type="button" class="btn btn-outline-dark mr-4" data-toggle="modal"
+                        data-target="#followerModal">
+                        Followers: <%= user.followers.length%>
+                    </button>
+
+                    <!-- Follower Modal -->
+                    <div class="modal fade" id="followerModal" tabindex="-1" role="dialog"
+                        aria-labelledby="followerModalTitle" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="followerModalTitle">Your Followers:</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <% if(user_logged_in['followers'].length==0) {%>
+                                        <p>You don't have any followers yet, share your profile:</p>
+                                        <a href={`/profiles/${user_logged_in['username']}`}
+                                            class="ssk ssk-facebook"></a>
+                                        <a href={`/profiles/${user_logged_in['username']}`} class="ssk ssk-twitter"></a>
+                                        <% } else {%>
+                                            <ul class="list-group">
+                                                <% for (follower in user_logged_in['followers']) {%>
+
+                                                    <li class="list-group-item">
+                                                        <a class='link-dark text-decoration-none'
+                                                            href="/profiles/<%=user_logged_in['followers'][follower].username%>"
+                                                            target="_blank">
+                                                            <%=user_logged_in['followers'][follower].username%>
+                                                        </a>
+                                                    </li>
+                                                    <% }%>
+                                            </ul>
+                                            <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Following -->
+                    <button type="button" class="btn btn-outline-dark mr-4" data-toggle="modal"
+                        data-target="#followingModal">
+                        Following: <%= user.following.length%> </button>
+
+                    <!-- Following Modal -->
+                    <div class="modal fade" id="followingModal" tabindex="-1" role="dialog"
+                        aria-labelledby="followingModalTitle" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="followingModalTitle">Profiles You Follow:</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <% if(user_logged_in['following'].length==0) {%>
+                                        <p>You aren't following any profiles, explore our <a href="/playlists"
+                                                class="text-decoration-none link-dark">community!</a></p>
+                                        <% } else {%>
+                                            <ul class="list-group">
+                                                <% for (following in user_logged_in['following']) {%>
+
+                                                    <li class="list-group-item">
+                                                        <div class="flex-row d-flex">
+                                                            <a class='link-dark text-decoration-none'
+                                                                href="/profiles/<%=user_logged_in['following'][following].username%>"
+                                                                target="_blank">
+                                                                <%=user_logged_in['following'][following].username%>
+                                                            </a>
+                                                            <form action="/unfollow_from_profile" method="POST">
+
+                                                                <button name='unfollow'
+                                                                    class="btn btn-danger ml-3 btn-sm" type="submit"
+                                                                    value="<%=user_logged_in['following'][following].username%>"
+                                                                    id="unfollow">unfollow</button>
+                                                            </form>
+                                                        </div>
+                                                    </li>
+                                                    <% }%>
+                                            </ul>
+                                            <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+                    <div class="text-left ml-1 mb-5">
+                        <h3 class='font-weight-normal'>Playlists posted by <%=user.username%>:
+                        </h3>
+                    </div>
+
+                    <!-- Display playlists submitted by profile -->
+                    <% for (let playlist of user.playlists){%>
+                        <div class="card" mb-3>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <img class="img-fluid" alt="" src="<%=playlist.image%>">
+                                </div>
+                                <div class="col-md-10">
+                                    <div class="card-body">
+                                        <h3 class="card-title">
+                                            <%= playlist.title %>
+                                        </h3>
+                                        <h5 class='card-title'>
+                                            <%= playlist.num_tracks%> Tracks
+                                        </h5>
+                                        <div class='d-flex flex-row'>
+                                            <div class='p-2'>
+                                                <p class="starability-result"
+                                                    data-rating="<%=Math.round(playlist.avg_rev)%>">
+                                                    Rated: <%= Math.round(playlist.avg_rev) %> stars
+                                                </p>
+                                            </div>
+                                            <div class='p-2'>
+                                                <h4 class='text-muted'>
+                                                    (<%= playlist.num_revs %>)
+                                                </h4>
+                                            </div>
+                                        </div>
+                                        <p class="card-text">
+                                            <%= playlist.description %>
+                                        </p>
+
+
+                                        <a class="btn btn-primary" href="/playlists/<%=playlist._id%>">View
+                                            <%=playlist.title%>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% }%>
+                            <% } %>
+
+                                <a href="/playlists">Back To All Playlists</a>
+
+                                <script type="text/javascript">
+                                    SocialShareKit.init({ forceInit: true });
+                                </script>

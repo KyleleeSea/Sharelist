@@ -1,0 +1,64 @@
+<!-- Display reviews -->
+<% for(let review of reviews) { %>
+    <div class="card mb-3 ">
+        <div class="card-body">
+            <div class="flex-row d-flex">
+                <h5 class="card-title mr-2 mt-1">
+                    <a class='link-dark text-decoration-none' href="/profiles/<%= review.author.username%>"
+                        target="_blank">
+                        <%= review.author.username%>
+                    </a>
+                </h5>
+                <p class="starability-result" data-rating="<%=review.rating%>">
+                    Rated: <%= review.rating %>
+                        stars
+                </p>
+
+            </div>
+            <p class="card-text">
+                <%= review.body %>
+            </p>
+            <% if( currentUser && review.author.equals(currentUser._id)) {%>
+                <form action="/playlists/<%=playlist._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
+                    <button class="btn btn-sm btn-danger">Delete</button>
+                </form>
+                <% } %>
+        </div>
+    </div>
+    <% } %>
+        <!-- // Swap to if greater than limit -->
+        <% if (reviews.length> limit) { %>
+            <% console.log(totalReviews) %>
+
+                <% if (currentPage> 0 && currentPage != 1) {%>
+
+                    <div class="mr-3">
+                        <form action="/playlists/<%=playlist._id%>" method="GET">
+                            <input type="hidden" id="page" name="page" value=<%=parseInt(currentPage) - 1%>>
+                            <input type="hidden" id="newPage" name="newPage" value=<%=parseInt(currentPage) - 1%>>
+                            <button type="Submit" class="btn btn-outline-primary">Previous
+                            </button>
+                        </form>
+                    </div>
+                    <% } %>
+                        <% if (currentPage < totalReviews && totalReviews !=1) { %>
+                            <form action="/playlists/<%=playlist._id%>" method="GET">
+                                <input type="hidden" id="page" name="page" value=<%=parseInt(currentPage) + 1%>>
+                                <input type="hidden" id="newPage" name="newPage" value=<%=parseInt(currentPage) + 1%>>
+                                <button type="Submit" class="btn btn-outline-primary">More
+                                </button>
+
+                            </form>
+                            <% }%>
+
+
+                                <% }%>
+                                    <% if (playlist.reviews.length==0) {%>
+                                        <div class='flex-row d-flex mt-5'>
+                                            <h5 class="font-weight-normal">
+                                                Playlist doesn't
+                                                have any
+                                                reviews yet.
+                                            </h5>
+                                        </div>
+                                        <% }%>

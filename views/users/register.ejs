@@ -1,0 +1,70 @@
+<% layout('layouts/boilerplate')%>
+    <div class="container d-flex justify-content-center align-items-center mt-5">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
+                <div class="card shadow">
+                    <img src="https://images.unsplash.com/photo-1495305379050-64540d6ee95d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                        alt="" class="card-img-top" />
+                    <div class="card-body">
+                        <h5 class="card-title">Sign Up Free</h5>
+                        <form action="/register" method="POST" class="validated-form" novalidate>
+                            <div class="mb-3">
+                                <label class="form-label" for="username">Username (No spaces or special
+                                    characters)</label>
+                                <input class="form-control" type="text" id="username" name="username" required
+                                    autofocus>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="email">Email</label>
+                                <input class="form-control" type="email" id="email" name="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <!-- Password and submit have Id to attach the enter button script -->
+                                <label class="form-label" for="password">Password (Minimum 8 characters)</label>
+                                <input class="form-control" type="password" id="password" name="password" required>
+                            </div>
+                            <button class="btn btn-success btn-block" type="button" data-toggle="modal"
+                                data-target="#captchaModal" id="first-button">Submit</button>
+                            <!-- Captcha modal -->
+                            <div class="modal fade" id="captchaModal" tabindex="-1" role="dialog"
+                                aria-labelledby="captchaModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="captchaModalLabel">Verify you're human:</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <%-captcha['data']%>
+                                                <label class="form-label" for="captcha">Enter what you
+                                                    see: </label>
+                                                <input class="form-control mt-3 mb-3 col-sm-2" type="text" id="captcha"
+                                                    name="captcha" required autofocus>
+                                                <input type="hidden" id="captcha_verif" name="captcha_verif"
+                                                    value=<%=captcha['text']%>>
+
+                                                <button type="submit" class="btn btn-primary">Register</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- First submit button (non captcha modal) activates upon enter key clicked -->
+    <script>
+        var input = document.getElementById("password");
+        input.addEventListener("keyup", function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                document.getElementById("first-button").click();
+            }
+        });
+    </script>

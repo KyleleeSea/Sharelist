@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShareList</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+        integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+
+    <link href="https://unpkg.com/intro.js/minified/introjs.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/stylesheets/stars.css">
+    <link rel="stylesheet" href="/stylesheets/mobile.css">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CMTN36614P"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-CMTN36614P');
+    </script>
+</head>
+
+<body class="d-flex flex-column vh-100">
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">ShareList</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link" href="/playlists">Playlists</a>
+                    <a class="nav-link" href="/playlists/new"
+                        data-intro="Give the gift of new music by sharing your playlists here! ShareList automatically creates your post from your playlist link and one click."
+                        data-step="5">Submit a Playlist</a>
+                </div>
+                <div class="navbar-nav ml-auto">
+                    <!-- Displays login and register button if not logged in. Displays profile and logout if logged in. -->
+                    <% if(!currentUser) {%>
+                        <a class="nav-link" href="/login">Login</a>
+                        <a class="nav-link" href="/register"
+                            data-intro="Sign up to submit your own Spotify playlists, leave reviews, and engage in our community! Having an account makes you a personalized feed of playlists posted by users you follow. Best part? ShareList is 100% free!"
+                            data-step="6">Register</a>
+                        <% } else {%>
+                            <a href="/profiles/<%=currentUser.username%>" class="nav-link">My Profile</a>
+                            <a class="nav-link" href="/logout">Logout</a>
+                            <% } %>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main class="container mt-5">
+        <%- include('../partials/flash')%>
+            <h1>All Playlists</h1>
+            <div data-intro="Click to search by the highest ranked playlists of all time, recent posts, and more."
+                data-step="2">
+                <%- include('../partials/sorter')%>
+            </div>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-outline-primary mb-2" data-toggle="modal" data-target="#narrow"
+                data-intro="Have specific music tastes? We do too! Sort playlists by genre, mood, and theme."
+                data-step="3">
+                Narrow by Tag
+            </button>
+
+            <!-- Modal -->
+            <div class=" modal fade" id="narrow" tabindex="-1" role="dialog" aria-labelledby="narrowLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="narrowLabel">Select a tag to search by:</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <% for(let tagTitle of tags) { %>
+                                <div class="mb-2 d-flex justify-content-center">
+                                    <form action="/playlists/" method="GET">
+                                        <input type="hidden" id='tag' name='tag' value="<%=tagTitle%>">
+                                        <button type="Submit" class="btn btn-outline-primary">
+                                            <%=tagTitle%>
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div data-intro='Click "View" on any playlist to listen directly inside your browser. No Spotify or ShareList account needed!'
+                data-step="4"> -->
+            </div>
+            <div data-intro="Welcome to the community! We're excited to have you here :)" data-step="7">
+            </div>
+            <%- include('../partials/index_partial')%>
+                <div class="flex-row d-flex mt-3 mb-4">
+                    <% if (currentPage> 0 && currentPage != 1) {%>
+                        <div class="mr-3">
+                            <form action="/playlists/" method="GET">
+                                <input type="hidden" id="page" name="page" value=<%=parseInt(currentPage) - 1%>>
+                                <input type="hidden" id="newPage" name="newPage" value=<%=parseInt(currentPage) - 1%>>
+                                <input type="hidden" id='tag' name='tag' value="<%=tag%>">
+                                <button type="Submit" class="btn btn-outline-primary">Previous Page</button>
+                            </form>
+                        </div>
+                        <% } %>
+                            <% if (currentPage < totalPages && totalPages !=1) { %>
+                                <form action="/playlists/" method="GET">
+                                    <input type="hidden" id="page" name="page" value=<%=parseInt(currentPage) + 1%>>
+                                    <input type="hidden" id="newPage" name="newPage" value=<%=parseInt(currentPage) +
+                                        1%>>
+                                    <input type="hidden" id='tag' name='tag' value="<%=tag%>">
+                                    <button type="Submit" class="btn btn-outline-primary">Next Page</button>
+
+                                </form>
+                                <% }%>
+
+                </div>
+                <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+
+                <script type="text/javascript">
+                    if (RegExp('multipage', 'gi').test(window.location.search)) {
+                        introJs().start();
+                    }
+                </script>
+                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+                    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+                    crossorigin="anonymous"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+                    integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+                    crossorigin="anonymous"></script>
+
+                <script src='/javascripts/validateForms.js'></script>
+    </main>
+    <%- include('../partials/footer')%>

@@ -1,0 +1,136 @@
+<% layout('layouts/boilerplate')%>
+    <link rel="stylesheet" href="/stylesheets/stars.css">
+    <link rel="stylesheet" href="/stylesheets/mobile.css">
+
+    <h1>My Feed</h1>
+    <%- include('../partials/sorter')%>
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-outline-primary mb-2" data-toggle="modal" data-target="#narrow">
+            Narrow by Tag
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="narrow" tabindex="-1" role="dialog" aria-labelledby="narrowLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="narrowLabel">Select a tag to search by:</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <% for(let tagTitle of tags) { %>
+                            <div class="mb-2 d-flex justify-content-center">
+                                <form action="/playlists/feed" method="GET">
+                                    <input type="hidden" id='tag' name='tag' value="<%=tagTitle%>">
+                                    <button type="Submit" class="btn btn-outline-primary">
+                                        <%=tagTitle%>
+                                    </button>
+                                </form>
+                            </div>
+
+                            <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- If no following displayed playlists, display message -->
+        <% if (playlists.length==0) {%>
+            <h3>You have no playlists posted by those you follow. Please explore our <a href="/playlists"
+                    class="text-decoration-none link-dark">community!</a> </h3>
+
+
+            <% } else {%>
+                <% for (let playlist of playlists){%>
+                    <div class="card" mb-3>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <img class="img-fluid" alt="" src="<%=playlist.image%>">
+                            </div>
+                            <div class="col-md-10">
+                                <div class="card-body">
+                                    <div class="flex-row d-flex">
+                                        <h3 class="card-title">
+                                            <%= playlist.title %>
+                                        </h3>
+
+                                        <div class="ml-1">
+                                            <% for(let tag of playlist.tags) { %>
+                                                <span class="badge alert-secondary text-dark mt-2 badge-pill">
+                                                    <%=tag%>
+                                                </span>
+                                                <% } %>
+                                        </div>
+                                    </div>
+                                    <div class='d-flex flex-row'>
+
+                                        <h6 class='card-title'>
+                                            <%= playlist.num_tracks%> Tracks | <a class='link-dark text-decoration-none'
+                                                    href="/profiles/<%= playlist.author.username%>"
+                                                    target="_blank">Posted
+                                                    by: <%= playlist.author.username%>
+                                                </a>
+                                        </h6>
+                                        <h6 class="card-title ml-2 text-secondary">
+                                            <form action="/unfollow_from_index" method="POST">
+                                                <input type="hidden" name="current_url" value='feed' />
+                                                <button name='unfollow' class="btn btn-outline-secondary btn-sm"
+                                                    type="submit" value="<%=playlist.author.username%>"
+                                                    id="unfollow">Unfollow</button>
+                                            </form>
+                                        </h6>
+                                    </div>
+
+                                    <div class='d-flex flex-row'>
+                                        <div class='p-1'>
+                                            <p class="starability-result"
+                                                data-rating="<%=Math.round(playlist.avg_rev)%>">
+                                                Rated: <%= Math.round(playlist.avg_rev) %> stars
+                                            </p>
+                                        </div>
+                                        <div class='p-1'>
+                                            <h4 class='text-muted'>
+                                                (<%= playlist.num_revs %>)
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <a class="btn btn-primary" href="/playlists/<%=playlist._id%>">View
+                                        <%=playlist.title%>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% }%>
+                        <% }%>
+                            <div class="flex-row d-flex mt-3 mb-4">
+                                <% if (currentPage> 0 && currentPage != 1) {%>
+                                    <div class="mr-3">
+                                        <form action="/playlists/feed" method="GET">
+                                            <input type="hidden" id="page" name="page" value=<%=parseInt(currentPage) -
+                                                1%>>
+                                            <input type="hidden" id="newPage" name="newPage"
+                                                value=<%=parseInt(currentPage) - 1%>>
+                                            <input type="hidden" id='tag' name='tag' value="<%=tag%>">
+                                            <button type="Submit" class="btn btn-outline-primary">Previous Page</button>
+                                        </form>
+                                    </div>
+                                    <% } %>
+                                        <% if (currentPage < totalPages && totalPlaylists> limit) { %>
+                                            <form action="/playlists/feed" method="GET">
+                                                <input type="hidden" id="page" name="page"
+                                                    value=<%=parseInt(currentPage) + 1%>>
+                                                <input type="hidden" id="newPage" name="newPage"
+                                                    value=<%=parseInt(currentPage) + 1%>>
+                                                <input type="hidden" id='tag' name='tag' value="<%=tag%>">
+                                                <button type="Submit" class="btn btn-outline-primary">Next Page</button>
+
+                                            </form>
+                                            <% }%>
+
+                            </div>

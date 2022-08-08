@@ -1,0 +1,62 @@
+<% layout('layouts/boilerplate')%>
+    <link rel="stylesheet" href="/stylesheets/stars.css">
+    <link rel="stylesheet" href="/stylesheets/mobile.css">
+
+
+    <h1>Featured Playlists</h1>
+
+    <%- include('../partials/sorter')%>
+        <div class="mt-2 mb-2">
+            <p>Interested in having your playlist pinned to the featured tab? We'd love to hear from you. Contact us <a
+                    href="/featurecontact">here.</a></p>
+        </div>
+
+
+        <% for (let playlist of playlists){%>
+            <div class="card mb-3">
+                <div class="row">
+                    <div class="col-md-2">
+                        <img class="img-fluid" alt="" src="<%=playlist.image%>">
+                    </div>
+                    <div class="col-md-10">
+                        <div class="card-body">
+                            <div class="flex-row d-flex">
+                                <h3 class="card-title">
+                                    <%= playlist.title %>
+                                </h3>
+
+                                <div class="ml-1">
+                                    <% for(let tag of playlist.tags) { %>
+                                        <span class="badge alert-secondary text-dark mt-2 badge-pill">
+                                            <%=tag%>
+                                        </span>
+                                        <% } %>
+                                </div>
+                            </div>
+
+                            <h6 class='card-title'>
+                                <%= playlist.num_tracks%> Tracks | <a class='link-dark text-decoration-none'
+                                        href="/profiles/<%= playlist.author.username%>" target="_blank">Posted
+                                        by: <%= playlist.author.username%>
+                                    </a>
+                            </h6>
+                            <div class='d-flex flex-row'>
+                                <div class='p-2'>
+                                    <p class="starability-result" data-rating="<%=Math.round(playlist.avg_rev)%>">
+                                        Rated: <%= Math.round(playlist.avg_rev) %> stars
+                                    </p>
+                                </div>
+                                <div class='p-2'>
+                                    <h4 class='text-muted'>
+                                        (<%= playlist.num_revs %>)
+                                    </h4>
+                                </div>
+                            </div>
+                            <a class="btn btn-primary" href="/playlists/<%=playlist._id%>">View
+                                <%=playlist.title%>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% }%>

@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg navbar-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                        <li class="nav-item"> <a href="/playlists/top" class="text-decoration-none text-white">
+                                        <button type="button" class="btn btn-secondary mb-3 mt-1">
+                                                Top</button></a>
+                        </li>
+                        <li class="nav-item"> <a href="/playlists/recent" class="text-decoration-none text-white">
+                                        <button type="button" class="btn btn-secondary mb-3 ml-2 mt-1">Recent</button>
+                                </a></li>
+
+                        <li class="nav-item"> <a href="/playlists/rising" class="text-decoration-none text-white">
+                                        <button type="button" class="btn btn-secondary mb-3 ml-2 mt-1">Rising</button>
+
+                                </a></li>
+
+                        <li class="nav-item"> <a href="/playlists/weekly" class="text-decoration-none text-white">
+                                        <button type="button" class="btn btn-secondary mb-3 ml-2 mt-1">Weekly</button>
+                                </a></li>
+
+                        <li class="nav-item"> <a href="/playlists/featured" class="text-decoration-none text-white">
+                                        <button type="button" class="btn btn-secondary mb-3 ml-2 mt-1">Featured</button>
+                                </a></li>
+                        <% if(currentUser) {%>
+                                <li class="nav-item">
+                                        <a href="/playlists/feed" class="text-decoration-none text-white">
+                                                <button type="button"
+                                                        class="btn btn-secondary mb-3 ml-2 mt-1">Feed</button>
+                                        </a>
+                                </li>
+
+                                <% }%>
+                </ul>
+        </div>
+</nav>

@@ -1,0 +1,63 @@
+<% layout('layouts/boilerplate')%>
+    <link rel="stylesheet" href="/stylesheets/stars.css">
+    <link rel="stylesheet" href="/stylesheets/mobile.css">
+
+    <h1>Highest Ranked Playlists of All Time</h1>
+    <%- include('../partials/sorter')%>
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-outline-primary mb-2" data-toggle="modal" data-target="#narrow">
+            Narrow by Tag
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="narrow" tabindex="-1" role="dialog" aria-labelledby="narrowLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="narrowLabel">Select a tag to search by:</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <% for(let tagTitle of tags) { %>
+                            <div class="mb-2 d-flex justify-content-center">
+                                <form action="/playlists/top" method="GET">
+                                    <input type="hidden" id='tag' name='tag' value="<%=tagTitle%>">
+                                    <button type="Submit" class="btn btn-outline-primary">
+                                        <%=tagTitle%>
+                                    </button>
+                                </form>
+                            </div>
+
+                            <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%- include('../partials/index_partial')%>
+            <div class="flex-row d-flex mt-3 mb-4">
+                <% if (currentPage> 0 && currentPage != 1) {%>
+                    <div class="mr-3">
+                        <form action="/playlists/top" method="GET">
+                            <input type="hidden" id="page" name="page" value=<%=parseInt(currentPage) - 1%>>
+                            <input type="hidden" id="newPage" name="newPage" value=<%=parseInt(currentPage) - 1%>>
+                            <input type="hidden" id='tag' name='tag' value="<%=tag%>">
+                            <button type="Submit" class="btn btn-outline-primary">Previous Page</button>
+                        </form>
+                    </div>
+                    <% } %>
+                        <% if (currentPage < totalPages) { %>
+                            <form action="/playlists/top" method="GET">
+                                <input type="hidden" id="page" name="page" value=<%=parseInt(currentPage) + 1%>>
+                                <input type="hidden" id="newPage" name="newPage" value=<%=parseInt(currentPage) + 1%>>
+                                <input type="hidden" id='tag' name='tag' value="<%=tag%>">
+                                <button type="Submit" class="btn btn-outline-primary">Next Page</button>
+
+                            </form>
+                            <% }%>
+
+            </div>
