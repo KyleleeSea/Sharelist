@@ -79,7 +79,7 @@ You may run this project locally by following these steps:
 
 Twitter - [@KyleleeSea](https://twitter.com/KyleleeSea)
 
-Project Link: [https://github.com/KyleleeSea/Seraphina](https://github.com/KyleleeSea/Seraphina)
+Project Link: [https://github.com/KyleleeSea/Sharelist](https://github.com/KyleleeSea/Sharelist)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [product-screenshot]: https://i.imgur.com/4r4pCkj.png
