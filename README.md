@@ -2,7 +2,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/KyleleeSea/Sharelist">
-    <img src="https://i.imgur.com/uWKFQzs.png" alt="Logo" width="80" height="80">
+    <img src="https://i.imgur.com/fH1NiUb.png" alt="Logo" width="80" height="80">
   </a>
 
 <h1 align="center">ShareList</h1>
