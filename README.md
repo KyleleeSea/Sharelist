@@ -35,6 +35,7 @@ ShareList: A Spotify playlist community to help you discover your next track to 
 - Sort by top, recent, rising, weekly, and featured
 - Post your own playlists
 - Contact form
+- IntroJS multi page onboarding 
 
 ### Built With
 
