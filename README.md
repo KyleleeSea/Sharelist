@@ -12,7 +12,7 @@
       A Spotify playlist sharing community with full create, read, update, delete functionality. 
     </h4>
     <br />
-    <a href="https://sharelist.org/">View Demo</a>
+<!--     <a href="https://sharelist.org/">View Demo</a> -->
     ·
     <a href="https://github.com/KyleleeSea/Sharelist/issues">Report Bug</a>
     ·
@@ -47,10 +47,10 @@ ShareList: A Spotify playlist community to help you discover your next track to 
 * [![PassportJS][passportjs.org]][passportjs-url]
 * [![Nodemailer][nodemailer.com]][nodemailer-url]
 
-
+<!-- 
 ## Live Demo
 
-Please view the full demo of ShareList here: <a href="https://sharelist.org/">ShareList.org</a>
+Please view the full demo of ShareList here: <a href="https://sharelist.org/">ShareList.org</a> -->
 
 ## Local Copy
 You may run this project locally by following these steps:
